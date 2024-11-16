@@ -42,7 +42,8 @@ impl Star {
 }
 
 pub fn process_stars(query: Query<&Star>) {
-    for star in query.iter() {
-        println!("Star: {} at position: {:?}", star.name, star.position);
+    let mut star_list = vec![];
+    for (index, star) in query.iter().enumerate() {
+        star_list.push((index as i64, star.position));
     }
 }
