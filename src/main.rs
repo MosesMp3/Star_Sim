@@ -12,6 +12,7 @@ fn main() {
         .add_systems(Startup, setup)
         .add_systems(Startup, create_stars)
         .add_systems(Update, process_stars)
+        .add_systems(Update, update_camera_position)
         .run();
 }
 
@@ -59,5 +60,11 @@ fn create_stars(mut meshes: ResMut<Assets<Mesh>>, mut commands: Commands) {
             date: "11/14/24".to_string(),
         };
         star_new.spawn_shape(&mut commands, &mut meshes);
+    }
+}
+
+fn update_camera_position(mut camera_query: Query<(&mut Transform, &Camera)>, time: Res<Time>) {
+    for (mut transform, _camera) in camera_query.iter_mut() {
+        transform.translation.x += time.delta_seconds() * 5.0; // Move 5 units per second
     }
 }
