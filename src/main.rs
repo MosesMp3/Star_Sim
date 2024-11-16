@@ -3,7 +3,7 @@ use bevy::prelude::*;
 use rand::Rng;
 
 mod star;
-use star::{spawn_stars, Star, StarList};
+use star::{process_stars, Star};
 
 fn main() {
     App::new()
@@ -11,8 +11,7 @@ fn main() {
         .insert_resource(ClearColor(Color::srgb(0.2, 0.7, 0.83)))
         .add_systems(Startup, setup)
         .add_systems(Startup, create_stars)
-        //.add_systems(Startup, picture)
-        //.add_systems(Update, animate_materials)
+        .add_systems(Update, process_stars)
         .run();
 }
 
@@ -24,7 +23,7 @@ fn setup(
 ) {
     commands.spawn((
         Camera3dBundle {
-            transform: Transform::from_xyz(0.0, 0.0, 0.5)
+            transform: Transform::from_xyz(0.0, -100.0, 0.0)
                 .looking_at(Vec3::new(0.0, 0.0, 0.0), Vec3::Y),
             ..default()
         },
@@ -60,6 +59,5 @@ fn create_stars(mut meshes: ResMut<Assets<Mesh>>, mut commands: Commands) {
             date: "11/14/24".to_string(),
         };
         star_new.spawn_shape(&mut commands, &mut meshes);
-        println!("{}", "worked");
     }
 }
