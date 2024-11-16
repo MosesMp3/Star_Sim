@@ -12,7 +12,7 @@ fn main() {
         .add_systems(Startup, setup)
         .add_systems(Startup, create_stars)
         .add_systems(Update, process_stars)
-        .add_systems(Update, update_camera_position)
+        //.add_systems(Update, update_camera_position)
         .run();
 }
 
@@ -48,7 +48,7 @@ fn picture(mut commands: Commands, asset_server: Res<AssetServer>) {
 }
 
 fn create_stars(mut meshes: ResMut<Assets<Mesh>>, mut commands: Commands) {
-    for _i in 0..=10000 {
+    for _i in 0..=1000 {
         let mut star_new = Star {
             name: "alex".to_string(),
             position: (
@@ -63,8 +63,8 @@ fn create_stars(mut meshes: ResMut<Assets<Mesh>>, mut commands: Commands) {
     }
 }
 
-fn update_camera_position(mut camera_query: Query<(&mut Transform, &Camera)>, time: Res<Time>) {
-    for (mut transform, _camera) in camera_query.iter_mut() {
-        transform.translation.x += time.delta_seconds() * 5.0; // Move 5 units per second
-    }
-}
+//fn update_camera_position(mut camera_query: Query<(&mut Transform, &Camera)>, time: Res<Time>) {
+//    for (mut transform, _camera) in camera_query.iter_mut() {
+//       transform.translation.x += time.delta_seconds() * 5.0; // Move 5 units per second
+//   }
+//}
