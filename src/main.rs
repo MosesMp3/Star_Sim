@@ -3,12 +3,17 @@ use bevy::prelude::*;
 use rand::Rng;
 
 mod star;
-use star::{process_stars, Star};
+use star::{process_stars, MyResource, Star};
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .insert_resource(ClearColor(Color::srgb(0.2, 0.7, 0.83)))
+        .insert_resource(MyResource {
+            star_list: Vec::new(),
+            starnumber: 0,
+            runonce: false,
+        })
         .add_systems(Startup, setup)
         .add_systems(Startup, create_stars)
         .add_systems(Update, process_stars)
@@ -62,9 +67,3 @@ fn create_stars(mut meshes: ResMut<Assets<Mesh>>, mut commands: Commands) {
         star_new.spawn_shape(&mut commands, &mut meshes);
     }
 }
-
-//fn update_camera_position(mut camera_query: Query<(&mut Transform, &Camera)>, time: Res<Time>) {
-//    for (mut transform, _camera) in camera_query.iter_mut() {
-//       transform.translation.x += time.delta_seconds() * 5.0; // Move 5 units per second
-//   }
-//}

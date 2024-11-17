@@ -41,37 +41,44 @@ impl Star {
     }
 }
 
-
-
 // start creating the resource of the vector also might have todo that with the vars that are 0
-
-
-
-
+#[derive(Resource)]
+pub struct MyResource {
+    pub star_list: Vec<(i64, (i64, i64, i64))>,
+    pub starnumber: usize,
+    pub runonce: bool,
+}
 
 pub fn process_stars(
     query: Query<&Star>,
     keys: Res<ButtonInput<KeyCode>>,
     mut camera_query: Query<(&mut Transform, &Camera)>,
     time: Res<Time>,
+    mut resource: ResMut<MyResource>,
 ) {
-    let mut star_list = vec![];
-    let mut runonce = Local::new(0);
-    let mut starnumber = Local::
-    if runonce == 0 {
+    if !resource.runonce {
         for (index, star) in query.iter().enumerate() {
-            star_list.push((index as i64, star.position));
+            resource.star_list.push((index as i64, star.position));
         }
-        runonce += 1
+        resource.runonce = true;
     }
+
+    // Navigate star list using arrow keys
     if keys.just_pressed(KeyCode::ArrowLeft) {
-        starnumber -= 1;
+        if resource.starnumber > 0 {
+            resource.starnumber -= 1;
+        }
     }
     if keys.just_pressed(KeyCode::ArrowRight) {
-        starnumber += 1;
+        if resource.starnumber < (resource.star_list.len() - 1) {
+            resource.starnumber += 1;
+        }
     }
+
     for (mut transform, _camera) in camera_query.iter_mut() {
-        transform.translation.x = star_list[starnumber].1 .0 as f32;
-        println!("{starnumber}");
+        transform.translation.x = resource.star_list[resource.starnumber].1 .0 as f32;
+        transform.translation.y = resource.star_list[resource.starnumber].1 .1 as f32;
+        transform.translation.z = (resource.star_list[resource.starnumber].1 .2 as f32) + 0.5;
+        println!("Current Star Number: {}", resource.starnumber);
     }
 }
