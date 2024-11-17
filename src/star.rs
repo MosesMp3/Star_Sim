@@ -78,7 +78,7 @@ pub fn process_stars(
     for (mut transform, _camera) in camera_query.iter_mut() {
         transform.translation.x = resource.star_list[resource.starnumber].1 .0 as f32;
         transform.translation.y = resource.star_list[resource.starnumber].1 .1 as f32;
-        transform.translation.z = (resource.star_list[resource.starnumber].1 .2 as f32) + 0.5;
+        transform.translation.z = (resource.star_list[resource.starnumber].1 .2 as f32) + 5.0;
         println!("Current Star Number: {}", resource.starnumber);
     }
 }
